@@ -1,41 +1,23 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
 import styles from './SearchBar.module.css';
-import toast from 'react-hot-toast';
 
 interface SearchBarProps {
-    onSubmit: (query: string) => void;
+    action: (formData: FormData) => void;
   }
   
 
-export default function SearchBar({ onSubmit }: SearchBarProps) { 
-    const [query, setQuery] = useState('');
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const trimmedQuery = query.trim();
-      if (!trimmedQuery) {
-          toast.error('Please enter your search query.');
-          return;
-      }
-
-    onSubmit(trimmedQuery);
-    setQuery('');
-
-  };
-
+export default function SearchBar({ action }: SearchBarProps) {
     return (
         <header className={styles.header}>
             <div className={styles.container}>
-            <a
-                className={styles.link}
-                href="https://www.themoviedb.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Powered by TMDB
-            </a>
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <a
+                    className={styles.link}
+                    href="https://www.themoviedb.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Powered by TMDB
+                </a>
+                <form className={styles.form} action={action}>
                     <input
                         className={styles.input}
                         type="text"
@@ -43,9 +25,6 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
                         autoComplete="off"
                         placeholder="Search movies..."
                         autoFocus
-
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
                     />
                     <button className={styles.button} type="submit">
                         Search

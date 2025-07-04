@@ -14,11 +14,18 @@ export default function App() {
     const [error, setError] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   
-    const handleSearch = async (query: string) => {
-        setIsLoading(true);
-        setError(false);
-        setMovies([]);
-  
+    const handleSearch = async (formData: FormData) => {
+      const query = formData.get('query')?.toString().trim();
+    
+      if (!query) {
+        toast.error('Please enter your search query.');
+        return;
+      }
+    
+      setIsLoading(true);
+      setError(false);
+      setMovies([]);
+      
       try {
         const result = await fetchMovies(query);
   
@@ -46,7 +53,7 @@ export default function App() {
       };
     return (
       <>
-        <SearchBar onSubmit={handleSearch} />
+        <SearchBar action={handleSearch} />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {!isLoading && !error && (

@@ -1,14 +1,7 @@
 import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import css from './MovieModal.module.css';
-
-interface Movie {
-  backdrop_path: string | null;
-  title: string;
-  overview: string;
-  release_date: string;
-  vote_average: number;
-}
+import type { Movie } from '../../types/movie';
 
 interface MovieModalProps {
   movie: Movie | null;
