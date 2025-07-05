@@ -6,7 +6,7 @@ import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { fetchMovies } from '../../services/movieService';
 import type { Movie } from '../../types/movie';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function App() { 
     const [movies, setMovies] = useState<Movie[]>([]);
@@ -14,18 +14,11 @@ export default function App() {
     const [error, setError] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   
-    const handleSearch = async (formData: FormData) => {
-      const query = formData.get('query')?.toString().trim();
-    
-      if (!query) {
-        toast.error('Please enter your search query.');
-        return;
-      }
-    
+    const handleSearch = async (query: string) => {
       setIsLoading(true);
       setError(false);
       setMovies([]);
-      
+
       try {
         const result = await fetchMovies(query);
   
@@ -53,7 +46,8 @@ export default function App() {
       };
     return (
       <>
-        <SearchBar action={handleSearch} />
+      <Toaster position="top-center" />
+      <SearchBar onSubmit={handleSearch} />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {!isLoading && !error && (
